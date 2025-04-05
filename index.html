@@ -1047,8 +1047,15 @@
 
   </script>
   
-  <!-- RSVP Functionality -->
+  <!-- Supabase Integration for RSVP Functionality -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/dist/umd/supabase.min.js"></script>
   <script>
+    // Initialize Supabase client
+    const SUPABASE_URL = 'https://vpfmzbxymtlkrrxrxnrq.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwZm16Ynh5bXRsa3JyeHJ4bnJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4NzY4ODEsImV4cCI6MjA1OTQ1Mjg4MX0.Xv2gFV4tjZdukysN0Q3DFFnYhO_59e0o1px4PfAoxb4';
+    // Create Supabase client using the global object
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    
     // Initialize RSVP data structure
     const rsvpData = {
       jt: null,
@@ -1061,16 +1068,28 @@
       benm: null
     };
     
+    // Map of member IDs to display names
+    const memberNames = {
+      jt: 'JT',
+      tim: 'Tim',
+      bens: 'Ben S.',
+      benw: 'Ben W.',
+      malcolm: 'Malcolm',
+      chris: 'Chris',
+      charlie: 'Charlie',
+      benm: 'Ben M.'
+    };
+    
     // Get all RSVP buttons
     const rsvpButtons = document.querySelectorAll('.rsvp-btn');
     
     // Add click event listeners to all RSVP buttons
     rsvpButtons.forEach(button => {
-      button.addEventListener('click', function() {
+      button.addEventListener('click', async function() {
         const member = this.getAttribute('data-member');
         const status = this.getAttribute('data-status');
         
-        // Update RSVP data
+        // Update RSVP data locally
         rsvpData[member] = status;
         
         // Update button styles for this member
@@ -1086,10 +1105,64 @@
         // Update the summary
         updateRSVPSummary();
         
-        // Save to localStorage
+        // Save to localStorage as backup
         saveRSVPData();
+        
+        // Save to Supabase
+        await saveRSVPToSupabase(member, status);
       });
     });
+    
+    // Function to save RSVP to Supabase
+    async function saveRSVPToSupabase(memberId, status) {
+      try {
+        // Check if record exists
+        const { data: existingData, error: queryError } = await supabaseClient
+          .from('tucks_rsvps')
+          .select('*')
+          .eq('member_id', memberId)
+          .single();
+        
+        if (queryError && queryError.code !== 'PGRST116') { // PGRST116 is the error code for no rows returned
+          console.error('Error checking for existing RSVP:', queryError);
+          return;
+        }
+        
+        if (existingData) {
+          // Update existing record
+          const { error: updateError } = await supabaseClient
+            .from('tucks_rsvps')
+            .update({
+              status: status,
+              updated_at: new Date().toISOString()
+            })
+            .eq('member_id', memberId);
+          
+          if (updateError) {
+            console.error('Error updating RSVP:', updateError);
+          }
+        } else {
+          // Insert new record
+          const { error: insertError } = await supabaseClient
+            .from('tucks_rsvps')
+            .insert([
+              {
+                member_id: memberId,
+                member_name: memberNames[memberId],
+                status: status,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+              }
+            ]);
+          
+          if (insertError) {
+            console.error('Error creating RSVP:', insertError);
+          }
+        }
+      } catch (error) {
+        console.error('Unexpected error saving RSVP:', error);
+      }
+    }
     
     // Function to update status indicator
     function updateStatusIndicator(member, status) {
@@ -1109,9 +1182,9 @@
       
       // Set indicator content based on status
       if (status === 'yes') {
-        indicator.innerHTML = '✓';
+        indicator.innerHTML = '&#10004;';
       } else if (status === 'no') {
-        indicator.innerHTML = '✗';
+        indicator.innerHTML = '&#10006;';
       } else {
         indicator.innerHTML = '?';
       }
@@ -1137,18 +1210,6 @@
         no: [],
         maybe: [],
         pending: []
-      };
-      
-      // Map of member IDs to display names
-      const memberNames = {
-        jt: 'JT',
-        tim: 'Tim',
-        bens: 'Ben S.',
-        benw: 'Ben W.',
-        malcolm: 'Malcolm',
-        chris: 'Chris',
-        charlie: 'Charlie',
-        benm: 'Ben M.'
       };
       
       // Count responses
@@ -1191,13 +1252,62 @@
       summary.innerHTML = summaryHTML || '<p>Waiting for responses...</p>';
     }
     
-    // Function to save RSVP data to localStorage
+    // Function to save RSVP data to localStorage (as backup)
     function saveRSVPData() {
       localStorage.setItem('tucksRSVPData', JSON.stringify(rsvpData));
     }
     
-    // Function to load RSVP data from localStorage
-    function loadRSVPData() {
+    // Function to load RSVP data from Supabase
+    async function loadRSVPFromSupabase() {
+      try {
+        const { data, error } = await supabaseClient
+          .from('tucks_rsvps')
+          .select('member_id, status');
+        
+        if (error) {
+          console.error('Error loading RSVPs from Supabase:', error);
+          // Fall back to localStorage if Supabase fails
+          loadRSVPFromLocalStorage();
+          return;
+        }
+        
+        if (data && data.length > 0) {
+          // Reset rsvpData
+          Object.keys(rsvpData).forEach(key => {
+            rsvpData[key] = null;
+          });
+          
+          // Update with data from Supabase
+          data.forEach(item => {
+            if (rsvpData.hasOwnProperty(item.member_id)) {
+              rsvpData[item.member_id] = item.status;
+              
+              // Update button styles
+              const button = document.querySelector(`.rsvp-btn[data-member="${item.member_id}"][data-status="${item.status}"]`);
+              if (button) {
+                button.classList.add('active');
+              }
+              
+              // Update status indicator
+              updateStatusIndicator(item.member_id, item.status);
+            }
+          });
+          
+          // Update summary
+          updateRSVPSummary();
+        } else {
+          // No data in Supabase, fall back to localStorage
+          loadRSVPFromLocalStorage();
+        }
+      } catch (error) {
+        console.error('Unexpected error loading RSVPs:', error);
+        // Fall back to localStorage
+        loadRSVPFromLocalStorage();
+      }
+    }
+    
+    // Function to load RSVP data from localStorage (fallback)
+    function loadRSVPFromLocalStorage() {
       const savedData = localStorage.getItem('tucksRSVPData');
       if (savedData) {
         const parsedData = JSON.parse(savedData);
@@ -1223,8 +1333,11 @@
       }
     }
     
-    // Load saved RSVP data when the page loads
-    document.addEventListener('DOMContentLoaded', loadRSVPData);
+    // Initialize the page when DOM is loaded
+    document.addEventListener('DOMContentLoaded', async () => {
+      // First try to load from Supabase
+      await loadRSVPFromSupabase();
+    });
   </script>
 
 </body>
