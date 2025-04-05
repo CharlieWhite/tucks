@@ -383,7 +383,7 @@
         <div class="stat-label">Hiking Time</div>
       </div>
       <div class="stat-box">
-        <div class="stat-value">7 people</div>
+        <div class="stat-value" id="group-size-count">0 people</div>
         <div class="stat-label">Group Size</div>
       </div>
     </div>
@@ -1219,6 +1219,7 @@
     // Function to update RSVP summary
     function updateRSVPSummary() {
       const summary = document.getElementById('rsvp-summary');
+      const groupSizeElement = document.getElementById('group-size-count');
       
       // Count responses by status
       const counts = {
@@ -1252,6 +1253,10 @@
           names.pending.push(memberNames[member]);
         }
       });
+      
+      // Update group size count
+      const peopleText = counts.yes === 1 ? 'person' : 'people';
+      groupSizeElement.textContent = `${counts.yes} ${peopleText}`;
       
       // Create summary HTML
       let summaryHTML = '';
