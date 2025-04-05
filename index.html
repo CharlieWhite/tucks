@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tuckerman Ravine Ski Trip - May 4, 2025</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      background-color: #f5f5f5;
+    }
+    header {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://cdn.outsideonline.com/wp-content/uploads/2024/03/Tuckerman1.jpg');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      text-align: center;
+      padding: 12rem 2rem;
+      position: relative;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+      height: 30vh; /* Set to 50% of viewport height */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      color: #2c5282;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 0.5rem;
+      margin-top: 0;
+    }
+    .date-badge {
+      background-color: #2c5282;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    .map-container {
+      height: 500px;
+      background-color: #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+    .map-legend {
+      background-color: white;
+      border-radius: 4px;
+      padding: 10px;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+    .map-legend div {
+      margin: 5px 0;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    .legend-color {
+      width: 15px;
+      height: 15px;
+      margin-right: 8px;
+      border-radius: 2px;
+    }
+    .two-column {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .column {
+      flex: 1;
+      min-width: 300px;
+    }
+    ul {
+      padding-left: 1.5rem;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+    .checklist li {
+      list-style-type: none;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+    .checklist li:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 16px;
+      width: 16px;
+      border: 1px solid #cbd5e0;
+      border-radius: 3px;
+    }
+    .team-members {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .team-member {
+      background-color: #edf2f7;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      width: 120px;
+      position: relative;
+    }
+    
+    .rsvp-buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 0.5rem;
+      gap: 0.25rem;
+    }
+    
+    .rsvp-btn {
+      border: none;
+      border-radius: 4px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .rsvp-yes {
+      background-color: #C6F6D5;
+      color: #22543D;
+    }
+    
+    .rsvp-yes:hover, .rsvp-yes.active {
+      background-color: #48BB78;
+      color: white;
+    }
+    
+    .rsvp-no {
+      background-color: #FED7D7;
+      color: #822727;
+    }
+    
+    .rsvp-no:hover, .rsvp-no.active {
+      background-color: #F56565;
+      color: white;
+    }
+    
+    .rsvp-maybe {
+      background-color: #FEEBC8;
+      color: #744210;
+    }
+    
+    .rsvp-maybe:hover, .rsvp-maybe.active {
+      background-color: #ED8936;
+      color: white;
+    }
+    
+    .status-indicator {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    
+    .status-yes {
+      background-color: #48BB78;
+    }
+    
+    .status-no {
+      background-color: #F56565;
+    }
+    
+    .status-maybe {
+      background-color: #ED8936;
+    }
+    .avatar {
+      width: 60px;
+      height: 60px;
+      background-color: #2c5282;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.5rem;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      overflow: hidden;
+      position: relative;
+    }
+    .weather-alert {
+      background-color: #fff5f5;
+      border-left: 4px solid #f56565;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .stat-box {
+      background-color: #edf2f7;
+      border-radius: 8px;
+      padding: 1rem;
+      flex: 1;
+      min-width: 120px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #2c5282;
+      margin-bottom: 0.25rem;
+    }
+    .stat-label {
+      font-size: 0.875rem;
+      color: #718096;
+    }
+    .ski-lines {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .ski-line {
+      flex: 1;
+      min-width: 250px;
+      background-color: #edf2f7;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .ski-line-name {
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: #2c5282;
+    }
+    .difficulty {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .beginner {
+      background-color: #c6f6d5;
+      color: #2f855a;
+    }
+    .intermediate {
+      background-color: #bee3f8;
+      color: #2b6cb0;
+    }
+    .advanced {
+      background-color: #feebc8;
+      color: #c05621;
+    }
+    .expert {
+      background-color: #fed7d7;
+      color: #c53030;
+    }
+    footer {
+      background-color: #2d3748;
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.875rem;
+    }
+    .warning {
+      color: #c53030;
+      font-weight: bold;
+    }
+    .map-controls {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .map-control-btn {
+      background-color: #4299e1;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .map-control-btn:hover {
+      background-color: #3182ce;
+    }
+    .map-control-btn.active {
+      background-color: #2c5282;
+      font-weight: bold;
+    }
+    .route-info {
+      background-color: #ebf8ff;
+      border-left: 4px solid #4299e1;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 0 4px 4px 0;
+    }
+    .route-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .route-stat {
+      flex: 1;
+      min-width: 100px;
+      background-color: white;
+      padding: 0.5rem;
+      border-radius: 4px;
+      text-align: center;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    @media (max-width: 768px) {
+      .two-column {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tuckerman Ravine Ski Trip</h1>
+    <div class="date-badge">Sunday, May 4, 2025</div>
+  </header>
+  
+  <div class="container">
+    <div class="weather-alert">
+      <strong>Important:</strong> Always check the <a href="https://mountwashingtonavalanchecenter.org/" target="_blank">Mount Washington Avalanche Center</a> for current conditions before your trip. Spring conditions can change rapidly.
+    </div>
+    
+    <div class="stats">
+      <div class="stat-box">
+        <div class="stat-value">8.4 mi</div>
+        <div class="stat-label">Round Trip</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">3,050 ft</div>
+        <div class="stat-label">Elevation Gain</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">4-6 hrs</div>
+        <div class="stat-label">Hiking Time</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">7 people</div>
+        <div class="stat-label">Group Size</div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2>Tuckerman Ravine GPS Trail Map</h2>
+      <div class="map-container">
+        <div id="map"></div>
+      </div>
+      <div class="map-controls">
+        <button id="toggle-tucks" class="map-control-btn active">Tuckerman Ravine Trail</button>
+        <button id="toggle-sherburne" class="map-control-btn">Sherburne Ski Trail</button>
+        <button id="toggle-skilines" class="map-control-btn">Ski Lines</button>
+      </div>
+      
+
+      <div class="route-info">
+        <strong>Tuckerman Ravine Trail:</strong> The main hiking route up to Tuckerman Ravine. It starts at Pinkham Notch Visitor Center (2,032 ft) and climbs steadily to Hermit Lake Shelters (3,800 ft), then continues up to the ravine bowl (4,430 ft).
+        <div class="route-stats">
+          <div class="route-stat">
+            <div><strong>3.8 mi</strong></div>
+            <div>To Bowl</div>
+          </div>
+          <div class="route-stat">
+            <div><strong>2,400 ft</strong></div>
+            <div>Elevation Gain</div>
+          </div>
+          <div class="route-stat">
+            <div><strong>2.5-3 hrs</strong></div>
+            <div>Hiking Time</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2>Tuckerman Ravine Ski Lines</h2>
+      <p>Tuckerman Ravine offers some of the most challenging and rewarding backcountry skiing in the East. Here are the key lines to consider based on conditions and skill level:</p>
+      
+      <div class="ski-lines">
+        <div class="ski-line">
+          <div class="ski-line-name">The Lip</div>
+          <div class="difficulty expert">Expert</div>
+          <p>The steepest part of the ravine, often 50°+ pitch. Forms a distinct roll-over that can be intimidating to drop into. Best skied when well-filled with snow, usually sluffs significantly in spring conditions.</p>
+          <p><strong>Spring Tip:</strong> Often develops a bergschrund (crevasse) late season that must be avoided.</p>
+        </div>
+        
+        <div class="ski-line">
+          <div class="ski-line-name">Left Gully</div>
+          <div class="difficulty intermediate">Intermediate-Advanced</div>
+          <p>One of the more moderate lines at 30-35°. Protected from wind, tends to hold good snow later in spring. Narrower at the top, opens up below. Great for building confidence.</p>
+          <p><strong>Spring Tip:</strong> Often the best choice for first-timers to the ravine.</p>
+        </div>
+        
+        <div class="ski-line">
+          <div class="ski-line-name">Hillman's Highway</div>
+          <div class="difficulty advanced">Advanced</div>
+          <p>A long, narrow 30-40° gully on climber's right of the ravine. Less traffic than central routes and often holds good snow. More sustained pitch than other moderate lines.</p>
+          <p><strong>Spring Tip:</strong> Can be a good option when the main bowl is crowded.</p>
+        </div>
+      </div>
+      
+      <div class="ski-lines">
+        <div class="ski-line">
+          <div class="ski-line-name">Chute</div>
+          <div class="difficulty expert">Expert</div>
+          <p>Narrow 45° chute between rock outcroppings. Requires precise turns and confidence. Often forms a dogleg that requires careful navigation.</p>
+          <p><strong>Spring Tip:</strong> Afternoon sun exposure can quickly soften firm morning conditions.</p>
+        </div>
+        
+        <div class="ski-line">
+          <div class="ski-line-name">Sluice</div>
+          <div class="difficulty advanced">Advanced</div>
+          <p>Wide open 35-40° face with good visibility. Popular because it offers exciting steeps with more room for error than tighter lines.</p>
+          <p><strong>Spring Tip:</strong> Watch for ice fall from the headwall above, especially on warm afternoons.</p>
+        </div>
+        
+        <div class="ski-line">
+          <div class="ski-line-name">Sherburne Trail</div>
+          <div class="difficulty beginner">Beginner-Intermediate</div>
+          <p>Not in the ravine proper, but the main ski route down from Hermit Lake to Pinkham Notch. A winding, moderate trail through trees that serves as the exit route for all ravine skiing.</p>
+          <p><strong>Spring Tip:</strong> Gets progressively more patchy in May, often requiring taking skis off for lower sections.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="two-column">
+      <div class="column">
+        <div class="card">
+          <h2>Directions to Trailhead</h2>
+          <p><strong>Address:</strong> Pinkham Notch Visitor Center, 361 NH-16, Gorham, NH 03581</p>
+          <ul>
+            <li><strong>From Portland, Maine:</strong> Take Route 302 W through Bridgton and Fryeburg. Continue on Route 302 to North Conway, NH. In North Conway, turn right onto NH-16 N and follow it through Pinkham Notch. The Pinkham Notch Visitor Center will be on your right (~1h 45m).</li>
+            <li><strong>Parking:</strong> There is a large parking lot at Pinkham Notch Visitor Center. Arrive early as it fills up on busy spring skiing days.</li>
+            <li><strong>Fees:</strong> No permit required, but a $5 donation to the Appalachian Mountain Club is suggested.</li>
+          </ul>
+        </div>
+        
+        <div class="card">
+          <h2>Important Information</h2>
+          <ul>
+            <li><strong>Meeting Time:</strong> 9:00 AM at Pinkham Notch Visitor Center</li>
+            <li><strong>Weather:</strong> Mount Washington has some of the most extreme and rapidly changing weather in the world. Check forecasts the night before and morning of your trip.</li>
+            <li><strong>Emergency Contact:</strong> Appalachian Mountain Club: (603) 466-2721</li>
+            <li class="warning">Spring skiing in Tuckerman Ravine comes with serious risks. Avalanches, falling ice, crevasses, and rapidly changing weather conditions require proper preparation and equipment.</li>
+            <li>HikeWise App - Download for real-time GPS tracking during your hike.</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="column">
+        <div class="card">
+          <h2>Packing List</h2>
+          <h3>Ski Equipment</h3>
+          <ul class="checklist">
+            <li>Skis/Snowboard & Poles</li>
+            <li>Alpine/AT Ski Boots</li>
+            <li>Microspikes (for uphill travel)</li>
+            <li>Ski Straps/Carry System</li>
+            <li>Helmet</li>
+          </ul>
+          
+          <h3>Safety Equipment</h3>
+          <ul class="checklist">
+            <li>Avalanche Beacon</li>
+            <li>Probe</li>
+            <li>Collapsible Shovel</li>
+            <li>First Aid Kit</li>
+            <li>Headlamp w/ extra batteries</li>
+            <li>Emergency Whistle</li>
+            <li>Multi-tool</li>
+          </ul>
+          
+          <h3>Clothing</h3>
+          <ul class="checklist">
+            <li>Moisture-wicking base layers</li>
+            <li>Insulating mid-layer</li>
+            <li>Waterproof/breathable shell jacket</li>
+            <li>Waterproof/breathable shell pants</li>
+            <li>Warm hat & sun hat</li>
+            <li>Gloves (2 pairs)</li>
+            <li>Goggles & Sunglasses</li>
+            <li>Extra socks</li>
+            <li>Sturdy hiking boots</li>
+            <li>Microspikes or crampons</li>
+          </ul>
+          
+          <h3>Other Essentials</h3>
+          <ul class="checklist">
+            <li>Backpack (30-40L)</li>
+            <li>Water (2-3L)</li>
+            <li>High-energy snacks</li>
+            <li>Lunch</li>
+            <li>Sunscreen</li>
+            <li>Lip balm with SPF</li>
+            <li>Insect repellent</li>
+            <li>Camera</li>
+            <li>Cash for AMC facilities</li>
+            <li>Waterproof phone case</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2>The Dream Team</h2>
+      <p>This epic adventure includes:</p>
+      <div class="team-members">
+        <div class="team-member" data-member="jt">
+          <div class="avatar">
+            <!-- JT - Mountain Goat -->
+            <svg viewBox="0 0 60 60" width="60" height="60">
+              <circle cx="30" cy="30" r="30" fill="#6B46C1" />
+              <path d="M20,20 Q30,5 40,20" stroke="white" stroke-width="2" fill="none" />
+              <circle cx="25" cy="20" r="5" fill="white" />
+              <circle cx="35" cy="20" r="5" fill="white" />
+              <path d="M25,40 Q30,45 35,40" stroke="white" stroke-width="2" fill="none" />
+              <path d="M15,15 L22,10" stroke="white" stroke-width="2" />
+              <path d="M45,15 L38,10" stroke="white" stroke-width="2" />
+            </svg>
+          </div>
+          <div>JT</div>
+          <div style="font-size: 0.7rem;">Mountain Goat</div>
+          <div class="rsvp-buttons">
+            <button class="rsvp-btn rsvp-yes" data-member="jt" data-status="yes">✓</button>
+            <button class="rsvp-btn rsvp-maybe" data-member="jt" data-status="maybe">?</button>
+            <button class="rsvp-btn rsvp-no" data-member="jt" data-status="no">✗</button>
+          </div>
+        </div>
+        
+        <div class="team-member" data-member="tim">
+          <div class="avatar">
+            <!-- Tim - Snow Wizard -->
+            <svg viewBox="0 0 60 60" width="60" height="60">
+              <circle cx="30" cy="30" r="30" fill="#2B6CB0" />
+              <path d="M20,45 L30,15 L40,45" stroke="white" stroke-width="2" fill="none" />
+              <circle cx="30" cy="15" r="8" fill="white" />
+              <circle cx="27" cy="13" r="1" fill="#2B6CB0" />
+              <circle cx="33" cy="13" r="1" fill="#2B6CB0" />
+              <path d="M27,18 Q30,20 33,18" stroke="#2B6CB0" stroke-width="1" fill="none" />
+              <path d="M15,30 L45,30" stroke="white" stroke-width="2" />
+            </svg>
+          </div>
+          <div>Tim</div>
+          <div style="font-size: 0.7rem;">Snow Wizard</div>
+          <div class="rsvp-buttons">
+            <button class="rsvp-btn rsvp-yes" data-member="tim" data-status="yes">✓</button>
+            <button class="rsvp-btn rsvp-maybe" data-member="tim" data-status="maybe">?</button>
+            <button class="rsvp-btn rsvp-no" data-member="tim" data-status="no">✗</button>
+          </div>
+        </div>
+        
+        <div class="team-member" data-member="bens">
+          <div class="avatar">
+            <!-- Ben S. - Powder Hound -->
+            <svg viewBox="0 0 60 60" width="60" height="60">
+              <circle cx="30" cy="30" r="30" fill="#DD6B20" />
+              <circle cx="25" cy="25" r="4" fill="white" />
+              <circle cx="35" cy="25" r="4" fill="white" />
+              <circle cx="25" cy="25" r="2" fill="#DD6B20" />
+              <circle cx="35" cy="25" r="2" fill="#DD6B20" />
+              <ellipse cx="30" cy="35" rx="8" ry="5" fill="white" />
+              <path d="M22,20 L18,15" stroke="white" stroke-width="2" />
+              <path d="M38,20 L42,15" stroke="white" stroke-width="2" />
+              <path d="M25,40 Q30,45 35,40" stroke="#DD6B20" stroke-width="1" fill="none" />
+            </svg>
+          </div>
+          <div>Ben S.</div>
+          <div style="font-size: 0.7rem;">Powder Hound</div>
+          <div class="rsvp-buttons">
+            <button class="rsvp-btn rsvp-yes" data-member="bens" data-status="yes">✓</button>
+            <button class="rsvp-btn rsvp-maybe" data-member="bens" data-status="maybe">?</button>
+            <button class="rsvp-btn rsvp-no" data-member="bens" data-status="no">✗</button>
+          </div>
+        </div>
+        
+        <div class="team-member" data-member="benw">
+          <div class="avatar">
+            <!-- Ben W. - Avalanche Expert -->
+            <svg viewBox="0 0 60 60" width="60" height="60">
+              <circle cx="30" cy="30" r="30" fill="#3182CE" />
+              <path d="M15,30 L45,30 L30,50 Z" fill="white" />
+              <circle cx="25" cy="25" r="3" fill="white" />
+              <circle cx="35" cy="25" r="3" fill="white" />
+              <path d="M25,35 Q30,38 35,35" stroke="#3182CE" stroke-width="1.5" fill="none" />
+              <path d="M20,15 L30,5 L40,15" stroke="white" stroke-width="2" fill="none" />
+            </svg>
+          </div>
+          <div>Ben W.</div>
+          <div style="font-size: 0.7rem;">Avalanche Expert</div>
+          <div class="rsvp-buttons">
+            <button class="rsvp-btn rsvp-yes" data-member="benw" data-status="yes">✓</button>
+            <button class="rsvp-btn rsvp-maybe" data-member="benw" data-status="maybe">?</button>
+            <button class="rsvp-btn rsvp-no" data-member="benw" data-status="no">✗</button>
+          </div>
+        </div>
+        
+        <div class="team-member" data-member="malcolm">
+          <div class="avatar">
+            <!-- Malcolm - Cliff Dropper -->
+            <svg viewBox="0 0 60 60" width="60" height="60">
+              <circle cx="30" cy="30" r="30" fill="#2C7A7B" />
+              <rect x="20" y="45" width="20" height="5" fill="white" />
+              <rect x="25" y="20" width="10" height="25" fill="white" />
+              <circle cx="30" cy="15" r="7" fill="white" />
+              <circle cx="27" cy="13" r="1.5" fill="#2C7A7B" />
+              <circle cx="33" cy="13" r="1.5" fill="#2C7A7B" />
+              <path d="M15,30 L25,30" stroke="white" stroke-width="2" />
+              <path d="M35,30 L45,30" stroke="white" stroke-width="2" />
+              <path d="M27,18 Q30,15 33,18" stroke="#2C7A7B" stroke-width="1.5" fill="none" />
+            </svg>
+          </div>
+          <div>Malcolm</div>
+          <div style="font-size: 0.7rem;">Cliff Dropper</div>
+          <div class="rsvp-buttons">
+            <button class="rsvp-btn rsvp-yes" data-member="malcolm" data-status="yes">✓</button>
+            <button class="rsvp-btn rsvp-maybe" data-member="malcolm" data-status="maybe">?</button>
+            <button class="rsvp-btn rsvp-no" data-member="malcolm" data-status="no">✗</button>
+          </div>
+        </div>
+        
+        <div class="team-member" data-member="chris">
+          <div class="avatar">
+            <!-- Chris - Trailblazer -->
+            <svg viewBox="0 0 60 60" width="60" height="60">
+              <circle cx="30" cy="30" r="30" fill="#805AD5" />
+              <path d="M20,20 L40,20 L30,40 Z" fill="white" />
+              <circle cx="25" cy="15" r="3" fill="white" />
+              <circle cx="35" cy="15" r="3" fill="white" />
+              <path d="M25,25 Q30,30 35,25" stroke="#805AD5" stroke-width="1.5" fill="none" />
+              <path d="M30,40 L30,50" stroke="white" stroke-width="2" />
+              <path d="M25,45 L35,45" stroke="white" stroke-width="2" />
+            </svg>
+          </div>
+          <div>Chris</div>
+          <div style="font-size: 0.7rem;">Trailblazer</div>
+          <div class="rsvp-buttons">
+            <button class="rsvp-btn rsvp-yes" data-member="chris" data-status="yes">✓</button>
+            <button class="rsvp-btn rsvp-maybe" data-member="chris" data-status="maybe">?</button>
+            <button class="rsvp-btn rsvp-no" data-member="chris" data-status="no">✗</button>
+          </div>
+        </div>
+        
+        <div class="team-member" data-member="charlie">
+          <div class="avatar">
+            <!-- Charlie - Backcountry Chef -->
+            <svg viewBox="0 0 60 60" width="60" height="60">
+              <circle cx="30" cy="30" r="30" fill="#E53E3E" />
+              <circle cx="30" cy="25" r="12" fill="white" />
+              <circle cx="25" cy="22" r="2" fill="#E53E3E" />
+              <circle cx="35" cy="22" r="2" fill="#E53E3E" />
+              <path d="M25,28 Q30,32 35,28" stroke="#E53E3E" stroke-width="1.5" fill="none" />
+              <path d="M20,38 Q30,45 40,38" fill="white" />
+              <rect x="27" y="10" width="6" height="5" fill="white" />
+            </svg>
+          </div>
+          <div>Charlie</div>
+          <div style="font-size: 0.7rem;">Backcountry Chef</div>
+          <div class="rsvp-buttons">
+            <button class="rsvp-btn rsvp-yes" data-member="charlie" data-status="yes">✓</button>
+            <button class="rsvp-btn rsvp-maybe" data-member="charlie" data-status="maybe">?</button>
+            <button class="rsvp-btn rsvp-no" data-member="charlie" data-status="no">✗</button>
+          </div>
+        </div>
+        
+        <div class="team-member" data-member="benm">
+          <div class="avatar">
+            <!-- Ben M. - Terrain Park Pro -->
+            <svg viewBox="0 0 60 60" width="60" height="60">
+              <circle cx="30" cy="30" r="30" fill="#4C51BF" />
+              <path d="M20,25 L40,25" stroke="white" stroke-width="3" />
+              <path d="M20,35 L40,35" stroke="white" stroke-width="3" />
+              <circle cx="25" cy="18" r="3" fill="white" />
+              <circle cx="35" cy="18" r="3" fill="white" />
+              <path d="M25,45 Q30,50 35,45" stroke="white" stroke-width="2" fill="none" />
+              <path d="M15,30 L20,20 L25,30" stroke="white" stroke-width="1.5" fill="none" />
+              <path d="M35,30 L40,20 L45,30" stroke="white" stroke-width="1.5" fill="none" />
+            </svg>
+          </div>
+          <div>Ben M.</div>
+          <div style="font-size: 0.7rem;">Terrain Park Pro</div>
+          <div class="rsvp-buttons">
+            <button class="rsvp-btn rsvp-yes" data-member="benm" data-status="yes">✓</button>
+            <button class="rsvp-btn rsvp-maybe" data-member="benm" data-status="maybe">?</button>
+            <button class="rsvp-btn rsvp-no" data-member="benm" data-status="no">✗</button>
+          </div>
+        </div>
+      </div>
+      
+      <div style="margin-top: 2rem;">
+        <h3>RSVP Status</h3>
+        <div id="rsvp-summary">
+          <p>Waiting for responses...</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h2>Trip Schedule</h2>
+      <ul>
+        <li><strong>Optional:</strong> Sleep at Ben Sampson's place Saturday night</li>
+        <li><strong>9:00 AM:</strong> Meet at Pinkham Notch Visitor Center</li>
+        <li><strong>9:15 AM:</strong> Begin hike up Tuckerman Ravine Trail</li>
+        <li><strong>11:30 AM:</strong> Arrive at Hermit Lake Shelters (HoJo's)</li>
+        <li><strong>12:15 PM:</strong> Reach the bowl, assess conditions</li>
+        <li><strong>12:30 PM - 4:00 PM:</strong> Skiing/riding time</li>
+        <li><strong>4:30 PM:</strong> Begin descent back to parking lot</li>
+        <li><strong>6:00 PM:</strong> Arrive at Pinkham Notch</li>
+        <li><strong>6:30 PM:</strong> Celebratory dinner at Moat Mountain Smokehouse & Brewing Co.</li>
+      </ul>
+    </div>
+  </div>
+  
+  <footer>
+    <p>Tuckerman Ravine Ski Trip Planner - May 4, 2025</p>
+    <p>Always check conditions at <a href="https://mountwashingtonavalanchecenter.org/" style="color: white;">Mount Washington Avalanche Center</a></p>
+  </footer>
+
+  <!-- Map scripts -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Map Initialization
+    const map = L.map('map', {
+      center: [44.265, -71.275], // Centered between trails
+      zoom: 13,
+      zoomControl: true // Enable zoom controls
+    });
+
+    // Use satellite imagery from ESRI
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 19,
+      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    }).addTo(map);
+
+    // --- Trail Data ---
+    const trails = {
+      tuckerman: {
+        name: "Tuckerman Ravine Trail",
+        color: "#FF0000", // Red for ascent
+        waypoints: [
+          [44.2577, -71.2536], // Pinkham Notch Visitor Center
+          [44.2615, -71.2780], // Midpoint approx
+          [44.2640, -71.2900], // Near Hermit Lake
+          [44.2639, -71.2917]  // Hermit Lake Shelters
+        ],
+        layer: null, // To store the Leaflet layer object
+        buttonId: 'toggle-tucks',
+        visible: true // Initially visible
+      },
+      sherburne: {
+        name: "Sherburne Ski Trail",
+        color: "#0000FF", // Blue for descent
+        waypoints: [
+          [44.2639, -71.2917], // Sherburne Trail Top (near Hermit Lake Shelters)
+          [44.2606, -71.2783], // Sherburne Trail Middle Section
+          [44.2577, -71.2536]  // Sherburne Trail Bottom (near Pinkham Notch)
+        ],
+        layer: null,
+        buttonId: 'toggle-sherburne',
+        visible: false // Initially hidden
+      },
+      skilines: {
+        name: "Ski Lines",
+        buttonId: 'toggle-skilines',
+        visible: true, // Initially visible
+        layers: [] // Will store multiple line layers
+      }
+      // Add more trails here if needed
+    };
+    
+    // --- Ski Lines Data ---
+    const skiLinesData = [
+      {
+        name: "The Lip",
+        difficulty: "Expert",
+        color: "#FF00FF", // Magenta
+        waypoints: [
+          [44.2697, -71.3044], // Start point
+          [44.2673, -71.3001]  // End point
+        ],
+        elevation: "5033-4500 ft",
+        slope: "40-45 degrees"
+      },
+      {
+        name: "Left Gully",
+        difficulty: "Intermediate/Advanced",
+        color: "#FF00FF", // Magenta
+        waypoints: [
+          [44.2713, -71.3041], // Start point
+          [44.2681, -71.2988]  // End point
+        ],
+        elevation: "5000-4400 ft",
+        slope: "30-35 degrees"
+      },
+      {
+        name: "Right Gully",
+        difficulty: "Intermediate",
+        color: "#FF00FF", // Magenta
+        waypoints: [
+          [44.2681, -71.3073], // Start point
+          [44.2662, -71.3017]  // End point
+        ],
+        elevation: "4900-4300 ft",
+        slope: "25-30 degrees"
+      },
+      {
+        name: "Hillman's Highway",
+        difficulty: "Advanced",
+        color: "#FF00FF", // Magenta
+        waypoints: [
+          [44.2674, -71.3083], // Start point
+          [44.2642, -71.3019]  // End point
+        ],
+        elevation: "4800-4100 ft",
+        slope: "30-38 degrees"
+      },
+      {
+        name: "Chute",
+        difficulty: "Expert",
+        color: "#FF00FF", // Magenta
+        waypoints: [
+          [44.2695, -71.3057], // Start point
+          [44.2677, -71.3012]  // End point
+        ],
+        elevation: "5020-4550 ft",
+        slope: "35-40 degrees"
+      }
+    ];
+
+    // --- Markers ---
+    const markers = {
+        pinkham: L.marker([44.2577, -71.2536]).bindPopup('<b>Pinkham Notch Visitor Center</b><br>Trailhead & Parking'),
+        hermitLake: L.marker([44.2639, -71.2917]).bindPopup('<b>Hermit Lake Shelters</b><br>Near Ravine Floor')
+    };
+
+    // Add markers to map
+    markers.pinkham.addTo(map);
+    markers.hermitLake.addTo(map);
+
+    // --- Function to create and add/remove trail layers ---
+    function toggleTrail(trailKey) {
+        const trail = trails[trailKey];
+        const button = document.getElementById(trail.buttonId);
+
+        if (trailKey === 'skilines') {
+            // Special handling for ski lines which have multiple layers
+            if (trail.visible) {
+                // If currently visible, remove all ski line layers
+                trail.layers.forEach(layer => {
+                    if (map.hasLayer(layer)) {
+                        map.removeLayer(layer);
+                    }
+                });
+                trail.visible = false;
+                button.classList.remove('active');
+            } else {
+                // If currently hidden, create and add all ski line layers if they don't exist
+                if (trail.layers.length === 0) {
+                    // Create layers if they don't exist
+                    skiLinesData.forEach(skiLine => {
+                        const layer = L.polyline(skiLine.waypoints, { 
+                            color: skiLine.color, 
+                            weight: 4 
+                        }).bindPopup(
+                    '<div style="min-width: 200px;">' +
+                    '<h3 style="margin: 0 0 8px 0; color: #2c5282; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">' + skiLine.name + '</h3>' +
+                    '<div style="margin-bottom: 4px;"><strong>Difficulty:</strong> ' + skiLine.difficulty + '</div>' +
+                    '<div style="margin-bottom: 4px;"><strong>Elevation:</strong> ' + skiLine.elevation + '</div>' +
+                    '<div style="margin-bottom: 4px;"><strong>Slope Angle:</strong> ' + skiLine.slope + '</div>' +
+                    '</div>'
+                );
+                        
+                        // Add start point marker
+                        const startMarker = L.circleMarker(skiLine.waypoints[0], {
+                            radius: 6,
+                            color: skiLine.color,
+                            fillColor: skiLine.color,
+                            fillOpacity: 1
+                        }).bindPopup(
+                            '<div style="min-width: 200px;">' +
+                            '<h3 style="margin: 0 0 8px 0; color: #2c5282; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">' + skiLine.name + ' Start</h3>' +
+                            '<div style="margin-bottom: 4px;"><strong>Difficulty:</strong> ' + skiLine.difficulty + '</div>' +
+                            '<div style="margin-bottom: 4px;"><strong>Elevation:</strong> ' + skiLine.elevation + '</div>' +
+                            '<div style="margin-bottom: 4px;"><strong>Slope Angle:</strong> ' + skiLine.slope + '</div>' +
+                            '</div>'
+                        );
+                        
+                        trail.layers.push(layer);
+                        trail.layers.push(startMarker);
+                    });
+                }
+                
+                // Add all layers to map
+                trail.layers.forEach(layer => {
+                    layer.addTo(map);
+                });
+                trail.visible = true;
+                button.classList.add('active');
+            }
+        } else {
+            // Normal trail handling
+            if (!trail.layer) {
+                // Create layer if it doesn't exist
+                trail.layer = L.polyline(trail.waypoints, { color: trail.color, weight: 4 }).bindPopup(trail.name);
+            }
+
+            if (trail.visible) {
+                // If currently visible, remove it
+                if (map.hasLayer(trail.layer)) {
+                    map.removeLayer(trail.layer);
+                }
+                trail.visible = false;
+                button.classList.remove('active');
+            } else {
+                // If currently hidden, add it
+                trail.layer.addTo(map);
+                trail.visible = true;
+                button.classList.add('active');
+            }
+        }
+    }
+
+    // --- Initial Trail Display & Button Listeners ---
+    Object.keys(trails).forEach(key => {
+        const trail = trails[key];
+        const button = document.getElementById(trail.buttonId);
+        
+        if (key !== 'skilines') {
+            // Create layer initially for regular trails
+            trail.layer = L.polyline(trail.waypoints, { color: trail.color, weight: 4 }).bindPopup(trail.name);
+
+            // Add to map only if initially visible
+            if (trail.visible) {
+                trail.layer.addTo(map);
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active'); // Ensure inactive style if not visible
+            }
+        } else {
+            // For ski lines, initialize the layers array and add to map since visible is true
+            // Pre-create the ski line layers
+            skiLinesData.forEach(skiLine => {
+                const layer = L.polyline(skiLine.waypoints, { 
+                    color: skiLine.color, 
+                    weight: 4 
+                }).bindPopup(
+                    '<div style="min-width: 200px;">' +
+                    '<h3 style="margin: 0 0 8px 0; color: #2c5282; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">' + skiLine.name + '</h3>' +
+                    '<div style="margin-bottom: 4px;"><strong>Difficulty:</strong> ' + skiLine.difficulty + '</div>' +
+                    '<div style="margin-bottom: 4px;"><strong>Elevation:</strong> ' + skiLine.elevation + '</div>' +
+                    '<div style="margin-bottom: 4px;"><strong>Slope Angle:</strong> ' + skiLine.slope + '</div>' +
+                    '</div>'
+                );
+                
+                // Add start point marker
+                const startMarker = L.circleMarker(skiLine.waypoints[0], {
+                    radius: 6,
+                    color: skiLine.color,
+                    fillColor: skiLine.color,
+                    fillOpacity: 1
+                }).bindPopup(
+                    '<div style="min-width: 200px;">' +
+                    '<h3 style="margin: 0 0 8px 0; color: #2c5282; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">' + skiLine.name + ' Start</h3>' +
+                    '<div style="margin-bottom: 4px;"><strong>Difficulty:</strong> ' + skiLine.difficulty + '</div>' +
+                    '<div style="margin-bottom: 4px;"><strong>Elevation:</strong> ' + skiLine.elevation + '</div>' +
+                    '<div style="margin-bottom: 4px;"><strong>Slope Angle:</strong> ' + skiLine.slope + '</div>' +
+                    '</div>'
+                );
+                
+                trail.layers.push(layer);
+                trail.layers.push(startMarker);
+                
+                // Add to map immediately since visible is true
+                layer.addTo(map);
+                startMarker.addTo(map);
+            });
+            
+            button.classList.add('active'); // Set active style since visible is true
+        }
+
+        // Add click listener
+        if (button) {
+            button.addEventListener('click', () => toggleTrail(key));
+        } else {
+            console.error(`Button with ID ${trail.buttonId} not found.`);
+        }
+    });
+
+    // Fit map bounds to show all features comfortably
+    const allPoints = [
+      ...trails.tuckerman.waypoints,
+      ...trails.sherburne.waypoints,
+      // Add ski line points to ensure they're in view
+      ...skiLinesData.flatMap(line => line.waypoints),
+      markers.pinkham.getLatLng(),
+      markers.hermitLake.getLatLng()
+    ];
+    const bounds = L.latLngBounds(allPoints);
+    map.fitBounds(bounds.pad(0.1)); // Add some padding
+
+  </script>
+  
+  <!-- RSVP Functionality -->
+  <script>
+    // Initialize RSVP data structure
+    const rsvpData = {
+      jt: null,
+      tim: null,
+      bens: null,
+      benw: null,
+      malcolm: null,
+      chris: null,
+      charlie: null,
+      benm: null
+    };
+    
+    // Get all RSVP buttons
+    const rsvpButtons = document.querySelectorAll('.rsvp-btn');
+    
+    // Add click event listeners to all RSVP buttons
+    rsvpButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const member = this.getAttribute('data-member');
+        const status = this.getAttribute('data-status');
+        
+        // Update RSVP data
+        rsvpData[member] = status;
+        
+        // Update button styles for this member
+        const memberButtons = document.querySelectorAll(`.rsvp-btn[data-member="${member}"]`);
+        memberButtons.forEach(btn => {
+          btn.classList.remove('active');
+        });
+        this.classList.add('active');
+        
+        // Update status indicator
+        updateStatusIndicator(member, status);
+        
+        // Update the summary
+        updateRSVPSummary();
+        
+        // Save to localStorage
+        saveRSVPData();
+      });
+    });
+    
+    // Function to update status indicator
+    function updateStatusIndicator(member, status) {
+      // Remove existing indicator if any
+      const memberElement = document.querySelector(`.team-member[data-member="${member}"]`);
+      const existingIndicator = memberElement.querySelector('.status-indicator');
+      if (existingIndicator) {
+        existingIndicator.remove();
+      }
+      
+      // If status is null, don't add an indicator
+      if (!status) return;
+      
+      // Create and add new indicator
+      const indicator = document.createElement('div');
+      indicator.className = `status-indicator status-${status}`;
+      
+      // Set indicator content based on status
+      if (status === 'yes') {
+        indicator.innerHTML = '✓';
+      } else if (status === 'no') {
+        indicator.innerHTML = '✗';
+      } else {
+        indicator.innerHTML = '?';
+      }
+      
+      memberElement.appendChild(indicator);
+    }
+    
+    // Function to update RSVP summary
+    function updateRSVPSummary() {
+      const summary = document.getElementById('rsvp-summary');
+      
+      // Count responses by status
+      const counts = {
+        yes: 0,
+        no: 0,
+        maybe: 0,
+        pending: 0
+      };
+      
+      // Get names for each category
+      const names = {
+        yes: [],
+        no: [],
+        maybe: [],
+        pending: []
+      };
+      
+      // Map of member IDs to display names
+      const memberNames = {
+        jt: 'JT',
+        tim: 'Tim',
+        bens: 'Ben S.',
+        benw: 'Ben W.',
+        malcolm: 'Malcolm',
+        chris: 'Chris',
+        charlie: 'Charlie',
+        benm: 'Ben M.'
+      };
+      
+      // Count responses
+      Object.entries(rsvpData).forEach(([member, status]) => {
+        if (status === 'yes') {
+          counts.yes++;
+          names.yes.push(memberNames[member]);
+        } else if (status === 'no') {
+          counts.no++;
+          names.no.push(memberNames[member]);
+        } else if (status === 'maybe') {
+          counts.maybe++;
+          names.maybe.push(memberNames[member]);
+        } else {
+          counts.pending++;
+          names.pending.push(memberNames[member]);
+        }
+      });
+      
+      // Create summary HTML
+      let summaryHTML = '';
+      
+      if (counts.yes > 0) {
+        summaryHTML += `<div class="summary-item"><strong>Confirmed (${counts.yes}):</strong> ${names.yes.join(', ')}</div>`;
+      }
+      
+      if (counts.maybe > 0) {
+        summaryHTML += `<div class="summary-item"><strong>Maybe (${counts.maybe}):</strong> ${names.maybe.join(', ')}</div>`;
+      }
+      
+      if (counts.no > 0) {
+        summaryHTML += `<div class="summary-item"><strong>Can't Make It (${counts.no}):</strong> ${names.no.join(', ')}</div>`;
+      }
+      
+      if (counts.pending > 0) {
+        summaryHTML += `<div class="summary-item"><strong>No Response (${counts.pending}):</strong> ${names.pending.join(', ')}</div>`;
+      }
+      
+      // Update the summary element
+      summary.innerHTML = summaryHTML || '<p>Waiting for responses...</p>';
+    }
+    
+    // Function to save RSVP data to localStorage
+    function saveRSVPData() {
+      localStorage.setItem('tucksRSVPData', JSON.stringify(rsvpData));
+    }
+    
+    // Function to load RSVP data from localStorage
+    function loadRSVPData() {
+      const savedData = localStorage.getItem('tucksRSVPData');
+      if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        
+        // Update rsvpData with saved values
+        Object.entries(parsedData).forEach(([member, status]) => {
+          if (status) {
+            rsvpData[member] = status;
+            
+            // Update button styles
+            const button = document.querySelector(`.rsvp-btn[data-member="${member}"][data-status="${status}"]`);
+            if (button) {
+              button.classList.add('active');
+            }
+            
+            // Update status indicator
+            updateStatusIndicator(member, status);
+          }
+        });
+        
+        // Update summary
+        updateRSVPSummary();
+      }
+    }
+    
+    // Load saved RSVP data when the page loads
+    document.addEventListener('DOMContentLoaded', loadRSVPData);
+  </script>
+
+</body>
+</html>
